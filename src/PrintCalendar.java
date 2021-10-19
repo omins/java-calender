@@ -14,15 +14,17 @@ public class PrintCalendar {
 		Scanner scanner = new Scanner(System.in);
 		int month = scanner.nextInt();
 
-		System.out.printf("2021년 기준, %d월은 ", month);
+		int maxDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		System.out.printf("2021년 기준, %d월은 %d까지 있습니다.", month, maxDays[month - 1]);
 
-		if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-			System.out.println("31일 까지 있습니다.");
-		} else if (month == 2) {
-			System.out.println("28일 까지 있습니다.");
-		} else if (month == 4 || month == 6 || month == 9 || month == 11) {
-			System.out.println("30일 까지 있습니다.");
-		}
 		scanner.close();
 	}
 }
+
+//if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+//	System.out.println("31일 까지 있습니다.");
+//} else if (month == 2) {
+//	System.out.println("28일 까지 있습니다.");
+//} else if (month == 4 || month == 6 || month == 9 || month == 11) {
+//	System.out.println("30일 까지 있습니다.");
+//}
