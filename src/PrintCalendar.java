@@ -19,12 +19,18 @@ public class PrintCalendar {
 	public static void main(String[] args) {
 
 		// 숫자를 입력받아, 해당하는 달의 최대 일수 출력
-		System.out.println("달(Month)을 입력하세요.");
 		Scanner scanner = new Scanner(System.in);
 		PrintCalendar cal = new PrintCalendar();
-		int month = scanner.nextInt();
+		System.out.println("반복횟수를 입력하세요.");
+		int repeat = scanner.nextInt();
 
-		System.out.printf("2021년 기준, %d월은 %d까지 있습니다.", month, cal.maxDaysOfMonth(month));
+		for (int i = 0; i < repeat; i++) {
+			System.out.println("달(Month)을 입력하세요.");
+			int month = scanner.nextInt();
+			System.out.printf("2021년 기준, %d월은 %d까지 있습니다.\n\n", month, cal.maxDaysOfMonth(month));
+		}
+
+		System.out.println("End.");
 
 		scanner.close();
 	}
