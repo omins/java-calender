@@ -78,9 +78,11 @@ public class Prompt {
 		System.out.printf("\n[일정 검색]\n");
 		System.out.println("날짜를 입력해주세요. ('yyyy-MM-dd')");
 		String date = s.next();
-		String plan = c.searchPlan(date);
-		if (plan != null && plan.length() != 0) {
-			System.out.printf("\n%s의 일정: %s\n\n", date, plan);
+		PlanItem plan;
+		plan = c.searchPlan(date);
+
+		if (plan != null && plan.detail.length() != 0) {
+			System.out.printf("\n%s의 일정: %s\n\n", date, plan.detail);
 		} else {
 			System.out.printf("등록된 일정이 없습니다.\n\n");
 		}
@@ -92,7 +94,7 @@ public class Prompt {
 		String date = s.next();
 		String text = "";
 
-		s.nextLine(); // ignore one newline
+		s.nextLine();
 		System.out.printf("\n일정을 입력해 주세요.\n");
 		text = s.nextLine();
 

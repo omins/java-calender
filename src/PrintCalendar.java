@@ -1,12 +1,11 @@
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
 public class PrintCalendar {
 
 	/** 캘린더 일정 등록을 위한 HashMap */
-	private HashMap<Date, String> planMap;
+	private HashMap<Date, PlanItem> planMap;
 
 	/** 윤년, 평년의 각월 최대 일수 배열 */
 	private static int[] MAX_DAYS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -14,7 +13,7 @@ public class PrintCalendar {
 
 	// HashMap 메모리 할당
 	public PrintCalendar() {
-		planMap = new HashMap<Date, String>();
+		planMap = new HashMap<Date, PlanItem>();
 	}
 
 	// 윤년 구분
@@ -43,23 +42,21 @@ public class PrintCalendar {
 	 */
 
 	// 일정 등록
-	public void registerPlan(String strDate, String plan) throws ParseException {
-
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
-		planMap.put(date, plan);
+	public void registerPlan(String strDate, String plan) {
+		PlanItem p = new PlanItem(strDate, plan);
+		planMap.put(p.getDate(), p);
 	}
 
 	// 일정 검색
-	public String searchPlan(String strDate) throws ParseException {
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
-		String plan = planMap.get(date);
-		return plan;
+	public PlanItem searchPlan(String strDate) throws ParseException {
+		Date date = PlanItem.getDatefromString(strDate);
+		return planMap.get(date);
 	}
 
 	/**
 	 * 정확한 달력 출력하기 위한 Zeller's congruence 공식 관련 메소드 
 	 * 1) makeMonthForFomula 
-	 * 2) makeYearOfCentury
+	 * 2) makeYearOfCentury 
 	 * 3) makeZeroBasedCentury 
 	 * 공식 적용 메소드 -> weekDay
 	 */
@@ -145,14 +142,6 @@ public class PrintCalendar {
 			}
 		}
 		System.out.printf("\n\n");
-	}
-
-	// Test code
-	public static void main(String[] args) throws ParseException {
-		PrintCalendar cal = new PrintCalendar();
-		cal.registerPlan("2021-10-23", "코딩하는 날!");
-		System.out.println(cal.searchPlan("2021-10-23").equals("코딩하는 날!"));
-
 	}
 
 }
