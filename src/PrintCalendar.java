@@ -1,6 +1,11 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class PrintCalendar {
 
@@ -11,9 +16,37 @@ public class PrintCalendar {
 	private static int[] MAX_DAYS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	private static int[] LEAP_MAX_DAYS = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; // 윤년
 
-	// HashMap 메모리 할당
+	/** 캘린더의 일정을 저장할 파일 */
+	private static final String SAVE_FILE = "calendarData.txt";
+
+	/**
+	 * planMap 메모리 할당 및 calendarData.txt에 저장되어 있는 일정 scan
+	 * (이 방법을 활용하니, calendarData.txt에 저장되어 있는 일정을 하나씩 다 불러온 다음
+	 * , 사용자가 해당 날짜를 입력하면 그에 맞는 값을 전달하게 된다.) 
+	 */
 	public PrintCalendar() {
 		planMap = new HashMap<Date, PlanItem>();
+		File f = new File(SAVE_FILE);
+		if (!f.exists()) {
+			return;
+		}
+
+		try {
+			Scanner s = new Scanner(f);
+			while (s.hasNext()) {
+				String line = s.nextLine();
+				String[] words = line.split(",");
+
+				String date = words[0];
+				String detail = words[1].replaceAll("\"", "");
+				PlanItem p = new PlanItem(date, detail);
+				planMap.put(p.getDate(), p);
+			}
+			s.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// 윤년 구분
@@ -45,6 +78,17 @@ public class PrintCalendar {
 	public void registerPlan(String strDate, String plan) {
 		PlanItem p = new PlanItem(strDate, plan);
 		planMap.put(p.getDate(), p);
+
+		File f = new File(SAVE_FILE);
+		String item = p.saveLine();
+		try {
+			FileWriter fw = new FileWriter(f, true);
+			fw.write(item);
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	// 일정 검색
@@ -54,7 +98,7 @@ public class PrintCalendar {
 	}
 
 	/**
-	 * 정확한 달력 출력하기 위한 Zeller's congruence 공식 관련 메소드 
+	 * 정확한 달력 출력하기 위한 Zeller's congruence 공식 관련 메소드
 	 * 1) makeMonthForFomula 
 	 * 2) makeYearOfCentury 
 	 * 3) makeZeroBasedCentury 

@@ -6,9 +6,7 @@ public class PlanItem {
 
 	public Date planDate;
 	public String detail;
-	public String peoples = "";
 
-	// TODO
 	public static Date getDatefromString(String strDate) {
 		Date date = null;
 		try {
@@ -29,8 +27,11 @@ public class PlanItem {
 		return planDate;
 	}
 
-	public void addPeople(String name) { // 확장성 고려한 참석자 추가 기능
-		peoples += name + ",";
+	public String saveLine() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String sDate = formatter.format(planDate);
+		return sDate + "," + "\"" + detail + "\"" + "\n";
+
 	}
 
 }
